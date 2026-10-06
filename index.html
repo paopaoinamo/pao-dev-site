@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pao — Roblox Game Developer</title>
+<meta name="description" content="Pao builds Roblox games: Pets Vs Brainrots RNG, Weapon RNG!!, and more. Systems, UI, maps and 3D models made in Roblox Studio and Blender.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#1E3266;
+    --sky-deep:#142349;
+    --plate:#3FA34D;
+    --plate-dark:#2E7F3A;
+    --red:#E2463F;
+    --yellow:#F6C343;
+    --blue:#3A7BE8;
+    --paper:#FFFFFF;
+    --ink:#14213D;
+    --muted:#B9C6E6;
+    --stud: 28px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--sky);
+    color:var(--paper);
+    font-family:"Nunito",system-ui,sans-serif;
+    font-size:18px;
+    line-height:1.6;
+  }
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+  /* ---------- nav ---------- */
+  nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+  .logo{font-family:"Lilita One",sans-serif;font-size:28px;text-decoration:none;display:flex;gap:10px;align-items:center}
+  .logo i{display:inline-block;width:22px;height:22px;background:var(--red);border-radius:4px;
+    box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+  nav ul{display:flex;gap:24px;list-style:none;font-weight:800}
+  nav ul a{text-decoration:none;opacity:.85}
+  nav ul a:hover{opacity:1}
+
+  /* ---------- hero baseplate ---------- */
+  .hero{padding:24px 0 72px}
+  .hero h1{
+    font-family:"Lilita One",sans-serif;
+    font-size:clamp(56px,11vw,132px);
+    line-height:.92;
+    letter-spacing:.01em;
+    text-shadow:0 6px 0 var(--sky-deep);
+  }
+  .hero p.role{font-size:clamp(20px,2.6vw,26px);font-weight:800;margin-top:18px;max-width:30ch}
+  .hero p.lede{color:var(--muted);margin-top:10px;max-width:52ch}
+  .plate-shell{margin-top:40px;position:relative}
+  .plate{
+    position:relative;
+    height:300px;
+    border-radius:14px;
+    background-color:var(--plate);
+    background-image:radial-gradient(circle at 50% 45%, rgba(255,255,255,.28) 0 5px, rgba(0,0,0,.18) 6px 8px, transparent 9px);
+    background-size:var(--stud) var(--stud);
+    box-shadow:0 14px 0 var(--plate-dark), 0 30px 40px rgba(0,0,0,.35);
+    cursor:crosshair;
+    overflow:hidden;
+  }
+  .plate-hint{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-top:28px;color:var(--muted);font-size:15px;font-weight:600
+  }
+  .plate-hint button{
+    font:inherit;font-weight:800;color:var(--paper);background:none;border:2px solid var(--muted);
+    border-radius:8px;padding:4px 12px;cursor:pointer
+  }
+  .brick{
+    position:absolute;
+    width:calc(var(--stud)*2);height:var(--stud);
+    border-radius:4px;
+    background-image:radial-gradient(circle at 50% 45%, rgba(255,255,255,.35) 0 5px, rgba(0,0,0,.2) 6px 8px, transparent 9px);
+    background-size:var(--stud) var(--stud);
+    box-shadow:inset 0 -5px 0 rgba(0,0,0,.25), 0 4px 6px rgba(0,0,0,.25);
+    animation:drop .32s cubic-bezier(.3,1.6,.6,1) both;
+    pointer-events:none;
+  }
+  @keyframes drop{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){.brick{animation:none}html{scroll-behavior:auto}}
+
+  .cta{
+    display:inline-block;margin-top:28px;
+    font-family:"Lilita One",sans-serif;font-size:22px;text-decoration:none;
+    background:var(--yellow);color:var(--ink);
+    padding:12px 26px;border-radius:10px;
+    box-shadow:0 6px 0 #B98C1C;
+    transition:transform .08s, box-shadow .08s;
+  }
+  .cta:active{transform:translateY(4px);box-shadow:0 2px 0 #B98C1C}
+
+  /* ---------- sections ---------- */
+  section{padding:72px 0}
+  h2{font-family:"Lilita One",sans-serif;font-size:clamp(36px,5vw,52px);line-height:1.05;margin-bottom:12px}
+  .sub{color:var(--muted);max-width:56ch;margin-bottom:40px}
+
+  /* games */
+  .games{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}
+  .game{background:var(--paper);color:var(--ink);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .game.featured{grid-column:span 6;display:grid;grid-template-columns:1.1fr 1fr}
+  .game.half{grid-column:span 3}
+  .game.third{grid-column:span 2}
+  .thumb{min-height:180px;position:relative;display:flex;align-items:flex-end;padding:18px}
+  .featured .thumb{min-height:340px}
+  .thumb span{
+    font-family:"Lilita One",sans-serif;color:#fff;font-size:30px;line-height:1;
+    text-shadow:0 3px 0 rgba(0,0,0,.35)
+  }
+  .featured .thumb span{font-size:48px}
+  .t-pvb{background:
+      radial-gradient(circle at 78% 30%, #FFD86B 0 34px, transparent 35px),
+      radial-gradient(circle at 20% 70%, #9B6BFF 0 58px, transparent 59px),
+      radial-gradient(circle at 62% 76%, #FF6F91 0 44px, transparent 45px),
+      linear-gradient(160deg,#4BC6FF,#2D5FD8)}
+  .t-weapon{background:
+      radial-gradient(circle at 25% 35%, var(--red) 0 22px, transparent 23px),
+      radial-gradient(circle at 45% 25%, var(--yellow) 0 18px, transparent 19px),
+      radial-gradient(circle at 70% 40%, #7CE07A 0 20px, transparent 21px),
+      radial-gradient(circle at 85% 22%, #FF8FD1 0 16px, transparent 17px),
+      linear-gradient(170deg,#9FE6FF,#5BB4F0)}
+  .t-hospital{background:
+      linear-gradient(90deg,transparent 46%,#fff 46% 54%,transparent 54%) center 40%/70px 70px no-repeat,
+      linear-gradient(0deg,transparent 46%,#fff 46% 54%,transparent 54%) center 40%/70px 70px no-repeat,
+      linear-gradient(170deg,#5ED3C1,#2A9D8F)}
+  .t-train{background:
+      repeating-linear-gradient(90deg,#5A4632 0 10px,transparent 10px 40px) bottom/100% 24px no-repeat,
+      linear-gradient(180deg,#2B2140,#B5546A 70%,#F2A65A)}
+  .t-prep{background:
+      linear-gradient(0deg,#4A5A3A 0 30%,transparent 30%),
+      linear-gradient(180deg,#7FB3D5,#D9E7C2)}
+  .body{padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .featured .body{padding:34px}
+  .status{align-self:flex-start;font-size:14px;font-weight:800;padding:3px 10px;border-radius:999px}
+  .live{background:#DDF6DF;color:#1E6B2A}
+  .dev{background:#FFF1C9;color:#7A5A00}
+  .game h3{font-family:"Lilita One",sans-serif;font-size:26px;font-weight:400;line-height:1.1}
+  .featured h3{font-size:36px}
+  .game p{color:#3D4A66;font-size:16px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px;list-style:none}
+  .tags li{font-size:13px;font-weight:800;background:#EEF2FB;color:#33415E;padding:3px 10px;border-radius:6px}
+  .stat{display:flex;gap:28px;margin:6px 0 4px}
+  .stat b{display:block;font-family:"Lilita One",sans-serif;font-size:34px;color:var(--blue);font-weight:400;line-height:1}
+  .stat small{font-size:14px;color:#5A6683;font-weight:700}
+
+  /* build list */
+  .build{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 48px;list-style:none}
+  .build li{display:grid;grid-template-columns:36px 1fr;gap:16px;align-items:start}
+  .build li::before{
+    content:"";width:36px;height:24px;border-radius:4px;margin-top:6px;
+    background-image:radial-gradient(circle at 50% 45%, rgba(255,255,255,.35) 0 4px, transparent 5px);
+    background-size:18px 24px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)
+  }
+  .build li:nth-child(4n+1)::before{background-color:var(--red)}
+  .build li:nth-child(4n+2)::before{background-color:var(--yellow)}
+  .build li:nth-child(4n+3)::before{background-color:var(--blue)}
+  .build li:nth-child(4n+4)::before{background-color:var(--plate)}
+  .build strong{display:block;font-size:20px}
+  .build span{color:var(--muted);font-size:16px}
+
+  .tools{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+  .tools span{border:2px solid var(--muted);border-radius:10px;padding:6px 16px;font-weight:800}
+
+  /* contact */
+  .contact{background:var(--plate);border-radius:18px;padding:48px 36px;
+    background-image:radial-gradient(circle at 50% 45%, rgba(255,255,255,.18) 0 5px, transparent 6px);
+    background-size:var(--stud) var(--stud);box-shadow:0 12px 0 var(--plate-dark)}
+  .contact p{max-width:48ch;font-weight:600}
+  .links{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px}
+  .links a{background:var(--paper);color:var(--ink);text-decoration:none;font-weight:800;
+    padding:10px 20px;border-radius:10px;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+  footer{padding:48px 0;color:var(--muted);font-size:15px}
+
+  @media (max-width:860px){
+    nav ul{gap:16px;font-size:16px}
+    .game.featured{grid-template-columns:1fr}
+    .featured .thumb{min-height:220px}
+    .game.half,.game.third{grid-column:span 6}
+    .build{grid-template-columns:1fr}
+    .plate{height:220px}
+  }
+  @media (max-width:520px){
+    nav ul li:nth-child(2){display:none}
+    .contact{padding:36px 22px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="#" class="logo"><i></i>Pao</a>
+    <ul>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#build">What I build</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <h1>I build<br>Roblox games.</h1>
+    <p class="role">Game developer making RNG games, tycoon-style hubs and everything in between.</p>
+    <p class="lede">From the first baseplate to a live server with thousands of players: scripting in Luau, UI that works on phone, console and PC, and 3D models from Blender.</p>
+    <a class="cta" href="#games">See my games</a>
+
+    <div class="plate-shell">
+      <div class="plate" id="plate" role="img" aria-label="A green Roblox-style baseplate. Click it to place bricks."></div>
+      <div class="plate-hint">
+        <span>Click the baseplate to place a brick.</span>
+        <button type="button" id="clear">Clear bricks</button>
+      </div>
+    </div>
+  </header>
+</div>
+
+<section id="games">
+  <div class="wrap">
+    <h2>Games</h2>
+    <p class="sub">Live games and projects I'm building right now.</p>
+
+    <div class="games">
+      <article class="game featured">
+        <div class="thumb t-pvb"><span>Pets Vs<br>Brainrots RNG</span></div>
+        <div class="body">
+          <em class="status live">Live</em>
+          <h3>Pets Vs Brainrots RNG</h3>
+          <div class="stat">
+            <div><b>10k+</b><small>players</small></div>
+            <div><b>RNG</b><small>pet rolls</small></div>
+          </div>
+          <p>Roll for pets, place them on your plot and hold off waves of brainrots. Includes Shiny and Galaxy pet crafting, clans with clan wars, daily and weekly quests, a skill tree, boss relics and server-wide luck events.</p>
+          <ul class="tags"><li>Luau</li><li>Server-side anti-cheat</li><li>Clan system</li><li>Mobile + console UI</li></ul>
+        </div>
+      </article>
+
+      <article class="game half">
+        <div class="thumb t-weapon"><span>Weapon RNG!!</span></div>
+        <div class="body">
+          <em class="status live">Launching</em>
+          <h3>Weapon RNG!!</h3>
+          <p>Pop balloons and targets with your bow, earn Cash, and unlock new areas. Roll weapons like the Blood Scythe and Spirit Lantern, each with its own animations.</p>
+          <ul class="tags"><li>Weapon animations</li><li>Area unlocks</li><li>Index</li></ul>
+        </div>
+      </article>
+
+      <article class="game half">
+        <div class="thumb t-hospital"><span>Hospital</span></div>
+        <div class="body">
+          <em class="status dev">In development</em>
+          <h3>Hospital game</h3>
+          <p>A hospital game with upgradeable front desks, from Basic to Mythic. Every desk is a low-poly model built in Blender and textured for Roblox Studio.</p>
+          <ul class="tags"><li>Blender</li><li>Low-poly models</li></ul>
+        </div>
+      </article>
+
+      <article class="game third">
+        <div class="thumb t-train"><span>The Last Train</span></div>
+        <div class="body">
+          <em class="status dev">In development</em>
+          <h3>The Last Train</h3>
+          <p>A new project, coming soon.</p>
+        </div>
+      </article>
+
+      <article class="game third">
+        <div class="thumb t-prep"><span>TheGameStarted</span></div>
+        <div class="body">
+          <em class="status dev">In development</em>
+          <h3>TheGameStarted</h3>
+          <p>A survival-style map with a prep phase area, built for a realistic look.</p>
+        </div>
+      </article>
+
+      <article class="game third">
+        <div class="thumb" style="background:linear-gradient(160deg,#F6C343,#E2463F)"><span>Your game?</span></div>
+        <div class="body">
+          <h3>Commissions</h3>
+          <p>Need a system, a map or a UI for your own Roblox game? Send me a message.</p>
+          <a href="#contact" style="font-weight:800;color:var(--blue)">Get in touch</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="build">
+  <div class="wrap">
+    <h2>What I build</h2>
+    <p class="sub">The parts of a Roblox game I work on every day.</p>
+    <ul class="build">
+      <li><div><strong>Game systems</strong><span>RNG rolls, crafting, quests, clans, skill trees, offline rewards and leaderboards.</span></div></li>
+      <li><div><strong>UI for every device</strong><span>HUDs, shops and menus that fit phone, tablet, console and PC without overlapping.</span></div></li>
+      <li><div><strong>Maps and lobbies</strong><span>Hubs, areas, lighting and terrain built to look good and stay smooth.</span></div></li>
+      <li><div><strong>Monetization</strong><span>Game passes, developer products, server luck boosts and a working Robux shop.</span></div></li>
+      <li><div><strong>Anti-cheat</strong><span>Server-side checks that stop remote spam and exploits without hurting real players.</span></div></li>
+      <li><div><strong>3D models</strong><span>Low-poly, textured models made in Blender and imported into Studio.</span></div></li>
+    </ul>
+    <div class="tools">
+      <span>Roblox Studio</span><span>Luau</span><span>Blender</span><span>DataStores</span><span>Animation</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <h2>Let's build something.</h2>
+      <p>Want to play my games, team up, or hire me for your own Roblox project? Find me here.</p>
+      <div class="links">
+        <a href="https://www.roblox.com/users/5382673333/profile" target="_blank" rel="noopener">Roblox: Mollyinanyo</a>
+        <a href="#" id="discord" title="Copy Discord username">Discord: @paopaoinako</a>
+        <a href="mailto:karltavera72@gmail.com">Email me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© <span id="yr"></span> Pao. Not affiliated with Roblox Corporation.</div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const plate = document.getElementById('plate');
+  const colors = ['#E2463F','#F6C343','#3A7BE8','#FFFFFF','#9B6BFF'];
+  let i = 0;
+  function stud(){ return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stud')); }
+  function place(x, y){
+    const s = stud();
+    const b = document.createElement('div');
+    b.className = 'brick';
+    b.style.left = Math.max(0, Math.min(Math.floor(x / s) * s, plate.clientWidth - s * 2)) + 'px';
+    b.style.top  = Math.max(0, Math.min(Math.floor(y / s) * s, plate.clientHeight - s)) + 'px';
+    b.style.backgroundColor = colors[i++ % colors.length];
+    plate.appendChild(b);
+  }
+  plate.addEventListener('click', e => {
+    const r = plate.getBoundingClientRect();
+    place(e.clientX - r.left, e.clientY - r.top);
+  });
+  document.getElementById('clear').addEventListener('click', () => {
+    plate.querySelectorAll('.brick').forEach(b => b.remove());
+    seed();
+  });
+  function seed(){
+    const s = stud(), w = plate.clientWidth, h = plate.clientHeight;
+    [[.12,.55],[.16,.45],[.14,.35],[.62,.6],[.66,.5],[.7,.6],[.82,.25],[.4,.7]]
+      .forEach(([fx,fy]) => place(fx*w, fy*h));
+  }
+  seed();
+
+  const dc = document.getElementById('discord');
+  dc.addEventListener('click', e => {
+    e.preventDefault();
+    navigator.clipboard?.writeText('paopaoinako').then(() => {
+      dc.textContent = 'Copied: paopaoinako';
+      setTimeout(() => dc.textContent = 'Discord: @paopaoinako', 2000);
+    });
+  });
+</script>
+</body>
+</html>
