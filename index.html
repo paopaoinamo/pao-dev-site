@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pao — Roblox Game Developer</title>
-<meta name="description" content="Pao builds Roblox games: Pets Vs Brainrots RNG, Weapon RNG!!, and more. Systems, UI, maps and 3D models made in Roblox Studio and Blender.">
+<meta name="description" content="Pao builds Roblox games: Pets Vs. Brainrots RNG, Weapon RNG! and more. Systems, UI, maps and 3D models made in Roblox Studio and Blender.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
@@ -36,7 +36,11 @@
   .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 
   /* ---------- nav ---------- */
-  nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+  .bar{position:sticky;top:0;z-index:10;background:rgba(30,50,102,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;max-width:1120px;margin:0 auto}
+  .live-now{display:flex;width:fit-content;align-items:center;gap:8px;margin-top:22px;font-weight:800;font-size:16px;
+    background:rgba(255,255,255,.08);border-radius:999px;padding:6px 14px 6px 12px}
+  .live-now[hidden]{display:none}
   .logo{font-family:"Lilita One",sans-serif;font-size:28px;text-decoration:none;display:flex;gap:10px;align-items:center}
   .logo i{display:inline-block;width:22px;height:22px;background:var(--red);border-radius:4px;
     box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
@@ -104,13 +108,37 @@
   .sub{color:var(--muted);max-width:56ch;margin-bottom:40px}
 
   /* games */
-  .games{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}
+  .games{display:grid;grid-template-columns:repeat(12,1fr);gap:22px}
   .game{background:var(--paper);color:var(--ink);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-  .game.featured{grid-column:span 6;display:grid;grid-template-columns:1.1fr 1fr}
-  .game.half{grid-column:span 3}
-  .game.third{grid-column:span 2}
-  .thumb{min-height:180px;position:relative;display:flex;align-items:flex-end;padding:18px}
-  .featured .thumb{min-height:340px}
+  .game.featured{grid-column:span 12;display:grid;grid-template-columns:1.25fr 1fr;border-radius:18px;
+    box-shadow:0 10px 0 var(--sky-deep)}
+  .game.featured.flip{grid-template-columns:1fr 1.25fr}
+  .game.featured.flip .thumb{order:2}
+  .game.small{grid-column:span 3}
+  .more{grid-column:span 12;font-family:"Lilita One",sans-serif;font-size:28px;margin:34px 0 -4px}
+  .thumb{min-height:170px;position:relative;display:flex;align-items:flex-end;padding:18px;text-decoration:none;overflow:hidden}
+  .featured .thumb{min-height:360px;min-width:0}
+  .featured .body{min-width:0}
+  .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s, transform .4s}
+  .thumb.has-img img{opacity:1}
+  .thumb.has-img span{display:none}
+  .featured .thumb:hover img{transform:scale(1.03)}
+  .head{display:flex;gap:16px;align-items:center}
+  .icon{width:72px;height:72px;border-radius:16px;flex:none;background:#EEF2FB;object-fit:cover;
+    box-shadow:0 4px 0 rgba(20,33,61,.18)}
+  .icon:not([src]){display:none}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2FB344;margin-right:6px;vertical-align:1px}
+  .status.on .dot,.live-now .dot{animation:pulse 1.6s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,179,68,.6)}100%{box-shadow:0 0 0 9px rgba(47,179,68,0)}}
+  @media (prefers-reduced-motion:reduce){.status.on .dot,.live-now .dot{animation:none}.thumb img{transition:none}}
+  .play{
+    align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:8px;
+    font-family:"Lilita One",sans-serif;font-size:20px;text-decoration:none;
+    background:var(--plate);color:#fff;padding:10px 22px 10px 18px;border-radius:10px;
+    box-shadow:0 5px 0 var(--plate-dark);transition:transform .08s, box-shadow .08s
+  }
+  .play svg{width:20px;height:20px;fill:currentColor}
+  .play:active{transform:translateY(4px);box-shadow:0 1px 0 var(--plate-dark)}
   .thumb span{
     font-family:"Lilita One",sans-serif;color:#fff;font-size:30px;line-height:1;
     text-shadow:0 3px 0 rgba(0,0,0,.35)
@@ -147,9 +175,10 @@
   .game p{color:#3D4A66;font-size:16px}
   .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px;list-style:none}
   .tags li{font-size:13px;font-weight:800;background:#EEF2FB;color:#33415E;padding:3px 10px;border-radius:6px}
-  .stat{display:flex;gap:28px;margin:6px 0 4px}
-  .stat b{display:block;font-family:"Lilita One",sans-serif;font-size:34px;color:var(--blue);font-weight:400;line-height:1}
-  .stat small{font-size:14px;color:#5A6683;font-weight:700}
+  .stat{display:flex;gap:30px;margin:4px 0 2px;flex-wrap:wrap}
+  .stat div{display:flex;flex-direction:column-reverse}
+  .stat dd{font-family:"Lilita One",sans-serif;font-size:32px;color:var(--blue);line-height:1}
+  .stat dt{font-size:14px;color:#5A6683;font-weight:700}
 
   /* build list */
   .build{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 48px;list-style:none}
@@ -181,20 +210,24 @@
 
   @media (max-width:860px){
     nav ul{gap:16px;font-size:16px}
-    .game.featured{grid-template-columns:1fr}
-    .featured .thumb{min-height:220px}
-    .game.half,.game.third{grid-column:span 6}
+    .game.featured,.game.featured.flip{grid-template-columns:1fr}
+    .game.featured.flip .thumb{order:0}
+    .featured .thumb{min-height:0;aspect-ratio:16/9}
+    .game.small{grid-column:span 6}
     .build{grid-template-columns:1fr}
     .plate{height:220px}
   }
   @media (max-width:520px){
+    .game.small{grid-column:span 12}
+    .featured .body{padding:24px}
+    .icon{width:56px;height:56px;border-radius:12px}
     nav ul li:nth-child(2){display:none}
     .contact{padding:36px 22px}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="bar">
   <nav>
     <a href="#" class="logo"><i></i>Pao</a>
     <ul>
@@ -203,12 +236,15 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
+</div>
+<div class="wrap">
 
   <header class="hero">
     <h1>I build<br>Roblox games.</h1>
     <p class="role">Game developer making RNG games, tycoon-style hubs and everything in between.</p>
-    <p class="lede">From the first baseplate to a live server with thousands of players: scripting in Luau, UI that works on phone, console and PC, and 3D models from Blender.</p>
+    <p class="lede">From the first baseplate to a live game on Roblox: scripting in Luau, UI that works on phone, console and PC, and 3D models from Blender.</p>
     <a class="cta" href="#games">See my games</a>
+    <p class="live-now" id="liveNow" hidden></p>
 
     <div class="plate-shell">
       <div class="plate" id="plate" role="img" aria-label="A green Roblox-style baseplate. Click it to place bricks."></div>
@@ -226,31 +262,55 @@
     <p class="sub">Live games and projects I'm building right now.</p>
 
     <div class="games">
-      <article class="game featured">
-        <div class="thumb t-pvb"><span>Pets Vs<br>Brainrots RNG</span></div>
+      <article class="game featured" data-place="87517601066107">
+        <a class="thumb t-pvb" href="https://www.roblox.com/games/87517601066107/Pets-Vs-Brainrots-RNG" target="_blank" rel="noopener" aria-label="Open Pets Vs. Brainrots RNG on Roblox">
+          <img alt="" loading="lazy"><span>Pets Vs.<br>Brainrots RNG</span>
+        </a>
         <div class="body">
-          <em class="status live">Live</em>
-          <h3>Pets Vs Brainrots RNG</h3>
-          <div class="stat">
-            <div><b>10k+</b><small>players</small></div>
-            <div><b>RNG</b><small>pet rolls</small></div>
+          <div class="head">
+            <img class="icon" alt="" loading="lazy">
+            <div>
+              <em class="status live"><i class="dot"></i><span data-k="playing">Live</span></em>
+              <h3>Pets Vs. Brainrots RNG</h3>
+            </div>
           </div>
-          <p>Roll for pets, place them on your plot and hold off waves of brainrots. Includes Shiny and Galaxy pet crafting, clans with clan wars, daily and weekly quests, a skill tree, boss relics and server-wide luck events.</p>
-          <ul class="tags"><li>Luau</li><li>Server-side anti-cheat</li><li>Clan system</li><li>Mobile + console UI</li></ul>
+          <dl class="stat">
+            <div><dt>Visits</dt><dd data-k="visits">–</dd></div>
+            <div><dt>Favorites</dt><dd data-k="favorites">–</dd></div>
+            <div><dt>Per server</dt><dd data-k="maxPlayers">–</dd></div>
+          </dl>
+          <p>Roll for pets, place them on your plot and hold off waves of brainrots. Craft Shiny and Galaxy pets, join a clan and fight clan wars, finish daily and weekly quests, and grind boss relics during server-wide luck events.</p>
+          <ul class="tags"><li>Tower defense</li><li>Pet RNG</li><li>Clans</li><li>Mobile + console</li></ul>
+          <a class="play" href="https://www.roblox.com/games/87517601066107/Pets-Vs-Brainrots-RNG" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Play on Roblox</a>
         </div>
       </article>
 
-      <article class="game half">
-        <div class="thumb t-weapon"><span>Weapon RNG!!</span></div>
+      <article class="game featured flip" data-place="111538811783413">
+        <a class="thumb t-weapon" href="https://www.roblox.com/games/111538811783413/Weapon-RNG" target="_blank" rel="noopener" aria-label="Open Weapon RNG! on Roblox">
+          <img alt="" loading="lazy"><span>Weapon RNG!</span>
+        </a>
         <div class="body">
-          <em class="status live">Launching</em>
-          <h3>Weapon RNG!!</h3>
-          <p>Pop balloons and targets with your bow, earn Cash, and unlock new areas. Roll weapons like the Blood Scythe and Spirit Lantern, each with its own animations.</p>
-          <ul class="tags"><li>Weapon animations</li><li>Area unlocks</li><li>Index</li></ul>
+          <div class="head">
+            <img class="icon" alt="" loading="lazy">
+            <div>
+              <em class="status live"><i class="dot"></i><span data-k="playing">Live</span></em>
+              <h3>Weapon RNG!</h3>
+            </div>
+          </div>
+          <dl class="stat">
+            <div><dt>Visits</dt><dd data-k="visits">–</dd></div>
+            <div><dt>Favorites</dt><dd data-k="favorites">–</dd></div>
+            <div><dt>Per server</dt><dd data-k="maxPlayers">–</dd></div>
+          </dl>
+          <p>Roll for weapons, pop balloons and targets, and earn Cash to unlock bigger areas. Every weapon, from the Squeaky Duck to the Blood Scythe, swings with its own animations.</p>
+          <ul class="tags"><li>Weapon RNG</li><li>Simulator</li><li>Area unlocks</li><li>Index</li></ul>
+          <a class="play" href="https://www.roblox.com/games/111538811783413/Weapon-RNG" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Play on Roblox</a>
         </div>
       </article>
 
-      <article class="game half">
+      <p class="more">Also in the works</p>
+
+      <article class="game small">
         <div class="thumb t-hospital"><span>Hospital</span></div>
         <div class="body">
           <em class="status dev">In development</em>
@@ -260,7 +320,7 @@
         </div>
       </article>
 
-      <article class="game third">
+      <article class="game small">
         <div class="thumb t-train"><span>The Last Train</span></div>
         <div class="body">
           <em class="status dev">In development</em>
@@ -269,7 +329,7 @@
         </div>
       </article>
 
-      <article class="game third">
+      <article class="game small">
         <div class="thumb t-prep"><span>TheGameStarted</span></div>
         <div class="body">
           <em class="status dev">In development</em>
@@ -278,7 +338,7 @@
         </div>
       </article>
 
-      <article class="game third">
+      <article class="game small">
         <div class="thumb" style="background:linear-gradient(160deg,#F6C343,#E2463F)"><span>Your game?</span></div>
         <div class="body">
           <h3>Commissions</h3>
@@ -355,6 +415,38 @@
       .forEach(([fx,fy]) => place(fx*w, fy*h));
   }
   seed();
+
+  // Live Roblox data from /api/games
+  const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1).replace(/\.0$/,'') + 'M'
+                 : n >= 1e3 ? (n/1e3).toFixed(1).replace(/\.0$/,'') + 'K' : String(n);
+  fetch('/api/games').then(r => r.ok ? r.json() : null).then(data => {
+    if (!data) return;
+    let total = 0;
+    document.querySelectorAll('[data-place]').forEach(card => {
+      const g = data[card.dataset.place];
+      if (!g) return;
+      total += g.playing;
+      const thumb = card.querySelector('.thumb');
+      if (g.thumbnail) {
+        const img = thumb.querySelector('img');
+        img.onload = () => thumb.classList.add('has-img');
+        img.src = g.thumbnail;
+        img.alt = g.name + ' thumbnail';
+      }
+      if (g.icon) { const ic = card.querySelector('.icon'); ic.src = g.icon; ic.alt = g.name + ' icon'; }
+      card.querySelector('[data-k="visits"]').textContent = fmt(g.visits);
+      card.querySelector('[data-k="favorites"]').textContent = fmt(g.favorites);
+      card.querySelector('[data-k="maxPlayers"]').textContent = g.maxPlayers;
+      const st = card.querySelector('.status');
+      st.querySelector('[data-k="playing"]').textContent = g.playing > 0 ? g.playing + ' playing now' : 'Live on Roblox';
+      st.classList.toggle('on', g.playing > 0);
+    });
+    if (total > 0) {
+      const ln = document.getElementById('liveNow');
+      ln.innerHTML = '<i class="dot"></i>' + total + (total === 1 ? ' player is' : ' players are') + ' in my games right now';
+      ln.hidden = false;
+    }
+  }).catch(() => {});
 
   const dc = document.getElementById('discord');
   dc.addEventListener('click', e => {
